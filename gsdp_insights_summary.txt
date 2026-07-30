@@ -1,0 +1,86 @@
+
+GSDP EDA — KEY INSIGHTS SUMMARY
+================================
+Dataset: 34 states/UTs, 11 years (2011-12 to 2021-22)
+
+HIGH / LOW GDP (2020-21):
+  Highest GSDP: Maharashtra — ₹2,711,685 Cr
+  Lowest GSDP (states): Mizoram — ₹29,214 Cr
+
+TOP 10 STATES BY GSDP (2020-21):
+     State/Uts  GSDP-Curr-2020-21(Cr)
+   Maharashtra             2711685.12
+    Tamil Nadu             1902688.87
+     Karnataka             1730991.41
+ Uttar Pradesh             1717505.47
+       Gujarat             1655916.77
+   West Bengal             1301016.77
+Andhra Pradesh             1014373.79
+     Rajasthan             1013323.01
+Madhya Pradesh              976281.48
+     Telangana              969655.78
+
+FASTEST GROWING STATES (CAGR over full period):
+     State/Uts    CAGR_%
+       Mizoram 16.732656
+Madhya Pradesh 13.991687
+       Tripura 13.569558
+     Karnataka 12.957289
+        Sikkim 12.887124
+
+SLOWEST GROWING STATES (CAGR over full period):
+  State/Uts   CAGR_%
+  Jharkhand 8.598856
+     Punjab 8.388580
+Uttarakhand 7.836665
+        Goa 7.258899
+  Meghalaya 6.530117
+
+OUTLIERS (IQR method, 2020-21 GSDP):
+  State/Uts  GSDP-Curr-2020-21(Cr)
+Maharashtra             2711685.12
+
+REGIONAL RANKING (2020-21 total GSDP):
+Region
+South        6454487.82
+West         4445939.81
+North        3472352.10
+Central      3271478.10
+East         2779613.25
+Northeast     628603.31
+Island             0.00
+
+DECADE INCREMENT (2011-12 -> 2020-21), Top 5 by % increase:
+     State/Uts  Increase_%
+       Mizoram  302.467938
+Madhya Pradesh  209.379060
+       Tripura  206.529952
+        Sikkim  193.096076
+     Karnataka  185.637523
+
+COVID-19 IMPACT (avg growth rate across states):
+Pre-COVID (2018-19)     10.556071
+Pre-COVID (2019-20)      9.542857
+COVID Year (2020-21)     2.652857
+Recovery (2021-22)      15.066471
+
+Most negatively hit by COVID (2020-21 growth rate), bottom 5:
+       State/Uts  % Growth2020-21
+     Uttarakhand            -3.92
+       Meghalaya            -3.69
+          Kerala            -3.01
+Himachal Pradesh            -1.56
+       Jharkhand            -1.27
+
+TOTAL NATIONAL GSDP BY YEAR:
+2011-12     8631488.67
+2012-13     9826568.65
+2013-14    11140329.80
+2014-15    12238134.50
+2015-16    13592304.65
+2016-17    15341772.08
+2017-18    17059326.73
+2018-19    18930267.76
+2019-20    20619409.90
+2020-21    21052474.39
+2021-22    14966722.21

@@ -1,0 +1,246 @@
+import base64, os
+
+OUT = "/home/claude/gsdp_eda/outputs"
+
+def b64(fname):
+    with open(os.path.join(OUT, fname), "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+def img_tag(fname, alt=""):
+    return f'<img src="data:image/png;base64,{b64(fname)}" alt="{alt}" />'
+
+html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>State-wise GSDP EDA Report (2011-12 to 2021-22)</title>
+<style>
+  :root {{
+    --ink: #1c2b33;
+    --sub: #52697a;
+    --accent: #2b6a99;
+    --accent2: #e76f51;
+    --bg: #f7f9fb;
+    --card: #ffffff;
+    --border: #e3e9ed;
+  }}
+  * {{ box-sizing: border-box; }}
+  body {{
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }}
+  header {{
+    background: linear-gradient(135deg, #1c3d5a, #2b6a99);
+    color: white;
+    padding: 48px 6vw 36px;
+  }}
+  header h1 {{ margin: 0 0 8px; font-size: 2.1rem; }}
+  header p {{ margin: 0; opacity: 0.9; font-size: 1.05rem; }}
+  .container {{ max-width: 1100px; margin: 0 auto; padding: 0 6vw 80px; }}
+  .kpi-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -28px 0 40px;
+  }}
+  .kpi {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 14px rgba(20,40,60,0.06);
+  }}
+  .kpi .label {{ font-size: 0.78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--sub); }}
+  .kpi .value {{ font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-top: 4px; }}
+  .kpi .sub {{ font-size: 0.82rem; color: var(--sub); margin-top: 2px; }}
+  section {{ margin: 56px 0; }}
+  section h2 {{
+    font-size: 1.4rem; border-left: 5px solid var(--accent);
+    padding-left: 14px; margin-bottom: 6px;
+  }}
+  section .note {{ color: var(--sub); font-size: 0.95rem; margin: 0 0 18px 19px; }}
+  .card {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 14px rgba(20,40,60,0.05);
+  }}
+  .card img {{ width: 100%; height: auto; border-radius: 8px; display: block; }}
+  .two-col {{ display: grid; grid-template-columns: 1fr; gap: 24px; }}
+  .insight-list {{ margin: 14px 0 0 19px; padding: 0; }}
+  .insight-list li {{ margin-bottom: 8px; }}
+  .flag {{
+    display: inline-block; background: #fff3e0; color: #b3541e;
+    border-radius: 6px; padding: 2px 8px; font-size: 0.8rem; font-weight: 600;
+    margin-bottom: 10px;
+  }}
+  table {{ border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 0.92rem; }}
+  th, td {{ padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }}
+  th {{ background: #eef3f6; color: var(--sub); font-weight: 600; }}
+  footer {{ text-align: center; color: var(--sub); font-size: 0.85rem; padding: 30px 0; }}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>State-wise GSDP — Exploratory Data Analysis</h1>
+  <p>Current-price Gross State Domestic Product, 2011-12 to 2021-22 &middot; 34 States &amp; Union Territories</p>
+</header>
+
+<div class="container">
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="label">Entities Covered</div><div class="value">34</div><div class="sub">States &amp; UTs</div></div>
+    <div class="kpi"><div class="label">Years Covered</div><div class="value">11</div><div class="sub">2011-12 → 2021-22</div></div>
+    <div class="kpi"><div class="label">Largest Economy (2020-21)</div><div class="value">Maharashtra</div><div class="sub">₹27.1 lakh crore</div></div>
+    <div class="kpi"><div class="label">Fastest CAGR (11-yr)</div><div class="value">Mizoram</div><div class="sub">16.7% per year</div></div>
+  </div>
+
+  <section>
+    <h2>1. Dataset Overview</h2>
+    <p>The dataset lists current-price GSDP figures (in ₹ crore) for 34 states and union territories across 11 financial years (2011-12 to 2021-22), along with year-on-year % growth columns. Out of 374 GSDP data points, 44 are missing (~11.8%).</p>
+    <p class="flag">⚠ Data completeness note</p>
+    <p>The most recent year, <strong>2021-22, is missing for 15 entities</strong> — including major economies like Maharashtra, Gujarat, West Bengal and Bihar — most likely because these figures had not yet been reported at the time of data collection. Using 2021-22 as a "current" snapshot would therefore wrongly rank these states as small or absent. To keep rankings and comparisons accurate, this report uses <strong>2020-21</strong> (the most recent year with data for all but 2 minor entities) as the reference "current" year for all cross-state comparisons, while trend charts still show all 11 years including the partial 2021-22.</p>
+    <p>Jammu &amp; Kashmir also appears twice — as the erstwhile state (<em>pre-2019</em>) and the newly formed union territory (<em>2019-20 onward</em>) after bifurcation — reflecting a genuine structural break in the data, not a data-quality issue.</p>
+  </section>
+
+  <section>
+    <h2>2. Year-wise Total GDP (National Trend)</h2>
+    <p class="note">Sum of GSDP across all reporting states/UTs for each year.</p>
+    <div class="card">{img_tag('01_yearwise_total_gdp.png')}</div>
+    <ul class="insight-list">
+      <li>National aggregate GSDP grew from <strong>₹86.3 lakh crore (2011-12)</strong> to a peak of <strong>₹210.5 lakh crore (2020-21)</strong> — roughly a 2.4x increase over the decade.</li>
+      <li>The visible drop in 2021-22 is a <strong>reporting-gap artifact</strong> (see Section 1), not a real economic contraction.</li>
+      <li>Growth was steady year-on-year with no visible decline until the COVID-affected slowdown in 2020-21's growth rate (though the level itself still rose slightly, since some states grew even as others contracted).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>3. High &amp; Low GDP States, Top 10 (2020-21)</h2>
+    <div class="card">{img_tag('02_top10_states.png')}</div>
+    <ul class="insight-list">
+      <li><strong>Highest GSDP:</strong> Maharashtra (₹27.1 lakh crore), followed by Tamil Nadu and Karnataka.</li>
+      <li><strong>Lowest GSDP (among states):</strong> Mizoram (₹29,214 crore) — smallest economy among the north-eastern states.</li>
+      <li>The top 5 states (Maharashtra, Tamil Nadu, Karnataka, Uttar Pradesh, Gujarat) together account for a disproportionately large share of national output, highlighting significant regional concentration.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. GDP Trend Over Time — Leading States</h2>
+    <div class="card">{img_tag('03_gdp_trend_top6.png')}</div>
+    <ul class="insight-list">
+      <li>Maharashtra has consistently led in absolute GSDP throughout the entire 11-year window.</li>
+      <li>Karnataka and Uttar Pradesh show the steepest upward trajectories among the top states, gradually closing the gap with Gujarat.</li>
+      <li>All top states show a visible flattening in growth momentum around 2020-21, consistent with the pandemic-driven slowdown.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. State-wise Growth Rate — Fastest &amp; Slowest (11-yr CAGR)</h2>
+    <p class="note">Compound Annual Growth Rate computed from each state's first to last available data point.</p>
+    <div class="card">{img_tag('04_growth_rate_top_bottom.png')}</div>
+    <ul class="insight-list">
+      <li><strong>Fastest-growing:</strong> Mizoram (16.7% CAGR), Madhya Pradesh (14.0%), Tripura (13.6%), Karnataka (13.0%), Sikkim (12.9%) — a mix of smaller north-eastern states catching up from a low base, and larger states like MP and Karnataka industrializing rapidly.</li>
+      <li><strong>Slowest-growing:</strong> Meghalaya (6.5%), Goa (7.3%), Uttarakhand (7.8%), Punjab (8.4%), Jharkhand (8.6%) — Goa's low CAGR partly reflects a sharp GSDP contraction in 2012-13 and 2013-14 (mining-sector downturn) from which it took years to recover.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6. GDP Distribution &amp; Outlier Detection (2020-21)</h2>
+    <div class="card">{img_tag('05_gdp_distribution_outliers.png')}</div>
+    <ul class="insight-list">
+      <li>The distribution is strongly <strong>right-skewed</strong> — most states cluster below ₹10 lakh crore, while a handful of large economies pull the tail far to the right.</li>
+      <li>Using the IQR method, <strong>Maharashtra is flagged as a statistical outlier</strong> — its GSDP is so much larger than the median state that it sits well beyond the upper whisker.</li>
+      <li>This confirms the concentration seen in Section 3: India's state economy sizes are highly unequal, not normally distributed.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Correlation Between Years</h2>
+    <p class="note">Correlation of GSDP levels across states, year to year — measures how consistently states retain their relative ranking over time.</p>
+    <div class="card">{img_tag('06_year_correlation_heatmap.png')}</div>
+    <ul class="insight-list">
+      <li>Correlation between consecutive and even distant years is consistently <strong>above 0.95</strong>, showing that relative state rankings are very stable — large economies stay large, small economies stay small.</li>
+      <li>Correlation is marginally weaker between years furthest apart (e.g. 2011-12 vs 2021-22), reflecting gradual re-ranking as faster-growing states close the gap.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>8. Contribution of Each State to National GDP (2020-21)</h2>
+    <div class="card">{img_tag('07_state_contribution_pie.png')}</div>
+    <ul class="insight-list">
+      <li>The top 10 states together contribute the large majority of national GSDP, with the remaining ~24 states/UTs collectively making up the "Others" slice.</li>
+      <li>Maharashtra alone contributes well over 10% of total measured GSDP — more than double most other large states.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>9. State Ranking — Regional Standing (2020-21)</h2>
+    <p class="note">States grouped into South, West, North, Central, East, Northeast, and Island regions.</p>
+    <div class="card">{img_tag('08_regional_ranking.png')}</div>
+    <ul class="insight-list">
+      <li><strong>South</strong> is the largest regional bloc by GSDP (led by Tamil Nadu, Karnataka, Andhra Pradesh, Telangana), followed by <strong>West</strong> (Maharashtra + Gujarat) and <strong>North</strong>.</li>
+      <li><strong>Northeast</strong> and <strong>Island</strong> regions remain far smaller in absolute terms, consistent with their lower population and industrial base.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>10. Increment Over the Decade (2011-12 → 2020-21)</h2>
+    <div class="card">{img_tag('09_decade_increment.png')}</div>
+    <ul class="insight-list">
+      <li><strong>Mizoram grew over 300%</strong> in GSDP terms over the decade — the highest percentage increase of any state, off a small base.</li>
+      <li>Madhya Pradesh, Tripura, Sikkim and Karnataka also more than tripled/doubled their GSDP, reflecting broad-based expansion beyond just the traditionally large economies.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>11. GDP Growth Rate Heatmap (State × Year)</h2>
+    <div class="card">{img_tag('10_growth_rate_heatmap.png')}</div>
+    <ul class="insight-list">
+      <li>The heatmap makes the <strong>2020-21 column stand out</strong> as a broad band of red/negative or near-zero growth across almost every state — the clearest visual signature of COVID-19's economic impact.</li>
+      <li>2021-22 (where reported) is uniformly bright green, showing strong across-the-board recovery.</li>
+      <li>A few negative-growth cells also appear in earlier years for individual states (e.g. Goa in 2012-13/2013-14), pointing to state-specific downturns unrelated to COVID.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>12. GDP Growth Rate After COVID-19</h2>
+    <div class="card">{img_tag('11_covid_impact.png')}</div>
+    <ul class="insight-list">
+      <li>Average state growth rate fell from <strong>~10.6% (2018-19)</strong> and <strong>~9.5% (2019-20)</strong> to just <strong>~2.7% in 2020-21</strong> — the pandemic year.</li>
+      <li>Recovery was sharp: average growth rebounded to <strong>~15.1% in 2021-22</strong> (among states that reported), exceeding pre-pandemic levels — consistent with a low-base effect plus genuine rebound demand.</li>
+      <li><strong>Hardest hit in 2020-21:</strong> Uttarakhand (-3.9%), Meghalaya (-3.7%), Kerala (-3.0%), Himachal Pradesh (-1.6%), Jharkhand (-1.3%) — a mix of tourism-dependent (Uttarakhand, HP, Kerala) and mining/industry-dependent (Jharkhand) economies.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Summary of Key Takeaways</h2>
+    <table>
+      <tr><th>Theme</th><th>Finding</th></tr>
+      <tr><td>Largest economy</td><td>Maharashtra (₹27.1 lakh cr, 2020-21)</td></tr>
+      <tr><td>Smallest state economy</td><td>Mizoram (₹29,214 cr, 2020-21)</td></tr>
+      <tr><td>Fastest 11-yr CAGR</td><td>Mizoram (16.7%)</td></tr>
+      <tr><td>Slowest 11-yr CAGR</td><td>Meghalaya (6.5%)</td></tr>
+      <tr><td>Statistical outlier</td><td>Maharashtra (IQR method)</td></tr>
+      <tr><td>Leading region</td><td>South &gt; West &gt; North &gt; Central &gt; East &gt; Northeast &gt; Island</td></tr>
+      <tr><td>COVID growth impact</td><td>Avg. growth fell from ~9.5% to ~2.7%, rebounded to ~15.1%</td></tr>
+      <tr><td>Data caveat</td><td>2021-22 missing for 15 entities incl. Maharashtra, Gujarat, West Bengal, Bihar</td></tr>
+    </table>
+  </section>
+
+</div>
+
+<footer>Generated with pandas, numpy, matplotlib &amp; seaborn &middot; State-wise GSDP EDA</footer>
+
+</body>
+</html>
+"""
+
+with open("/mnt/user-data/outputs/GSDP_EDA_Report.html", "w") as f:
+    f.write(html)
+
+print("Report written.")
